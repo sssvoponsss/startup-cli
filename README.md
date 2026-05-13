@@ -1,5 +1,5 @@
 # startup-cli
-check_root
+check_root \n
 install_sudo
 get_ssh_port
 change_ssh_port
