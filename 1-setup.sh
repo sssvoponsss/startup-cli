@@ -1,13 +1,23 @@
 #!/bin/bash
 
-# Exit immediately if a command exits with a non-zero status
-set -e
+# Exit on error and show all executed commands
+set -ex
 
 # Function to check if the script is run as root
 check_root() {
     if [ "$EUID" -ne 0 ]; then
         echo "Please run as root."
         exit 1
+    fi
+}
+
+# Function to install sudo if missing
+install_sudo() {
+    if ! command -v sudo &>/dev/null; then
+        echo "sudo not found, installing..."
+        apt-get update
+        apt-get install -y sudo
+        echo "sudo installed."
     fi
 }
 
@@ -106,6 +116,7 @@ create_new_user() {
 
 # Main script execution
 check_root
+install_sudo
 get_ssh_port
 change_ssh_port
 setup_firewall
